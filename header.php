@@ -11,10 +11,10 @@
     <?php wp_head(); ?>
 </head>
 
-
+<body>
 <header>
     <div class="logo">
-        <img src="<?php echo get_template_directory_uri(); ?>/img/logo.jpg" alt="">
+        <img src="<?php echo get_template_directory_uri(); ?>/images/logo.png" alt="">
     </div>
     <nav>
         <ul>
