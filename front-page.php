@@ -1,59 +1,120 @@
 <?php get_header(); ?>
 
-
+<main>
 <!-- Bannière -->
 <section class="banner">
-    <img src="<?php echo get_template_directory_uri(); ?>/images/nathalie-11.jpeg" alt="">
+<?php
+// Créer une nouvelle requête personnalisée
+$args = array(
+    'post_type'      => 'photo',       // Récupérer les articles (post)
+    'posts_per_page' => 1,           // Limiter à un seul résultat
+    'orderby'        => 'rand',      // Trier aléatoirement
+); 
+
+$query = new WP_Query($args);
+
+
+if ($query->have_posts()) {
+    while ($query->have_posts()) {
+        $query->the_post();  ?>
+
+<?php the_post_thumbnail('full'); ?>
+<?php
+    }
+    wp_reset_postdata(); // Réinitialiser la requête globale
+}
+?>
     <h1>Photographe Event</h1>
 </section>
 
 <section class="photos">
     <div class="filtres">
-        <form action="#">
+        <form action="<?php echo esc_url( home_url( '/' ) ); ?>" class="select-filtres" >
             <div class="filtres1">
                 <select name="categorie" id="categorie" class="myform">
                     <option value="">Catégories</option>
-                    <option value="">Réception</option>
-                    <option value="">Télévision</option>
-                    <option value="">Concert</option>
-                    <option value="">Mariage</option>
+                    <?php $categories = get_terms('categorie');  ?>
+                <?php
+                if (!empty($categories) && !is_wp_error($categories)) {
+                    foreach ($categories as $category) {
+                        echo "<option value='".esc_html($category->slug)."'>".esc_html($category->name)."</option>";
+                    }
+                } 
+                ?> 
                 </select>
 
                 <select name="format" id="format" class="myform">
                     <option value="">Format</option>
-                    <option value="">Paysage</option>
-                    <option value="">Portrait</option>
+                    <?php $formats = get_terms('format');  ?>
+                <?php
+                if (!empty($formats) && !is_wp_error($format)) {
+                    foreach ($formats as $format) {
+                        echo "<option value='".esc_html($format->slug)."'>".esc_html($format->name)."</option>";
+                    }
+                } 
+                ?> 
                 </select>
             </div>
 
             <div class="filtres2">
                 <select name="trier" id="trier" class="myform">
                     <option value="">Trier par</option>
-                    <option value="">Du + récent au + ancien</option>
-                    <option value="">Du + ancien au + récent</option>
+                    <option value="DESC">Du + récent au + ancien</option>
+                    <option value="ASC">Du + ancien au + récent</option>
                 </select>
             </div>
         </form>
     </div>
-    <div class="photos_list">
-            <div class="photo_item">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/nathalie-0.jpeg" alt="">
-                <div class="overlay">
-                    <div class="full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/icons/fullscreen.png" alt="Agrandir">
-                    </div>
-                    <div class="eye">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/icons/eye.png" alt="Voir">
-                    </div>
-                    <div class="infos">
-                        <div>sdhfkjhf</div>
-                        <div>sdklffsl</div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="photo_item">
-                <img src="<?php echo get_template_directory_uri(); ?>/images/nathalie-1.jpeg" alt="">
+    <div class="photos_list">
+    <?php
+// Créer une nouvelle requête personnalisée
+$args = array(
+    'post_type'      => 'photo',       // Récupérer les photos
+    'posts_per_page' => -1,           // toutes
+    'orderby'        => 'title',      // Trier aléatoirement
+); 
+
+    // Récupérer les variables de l'URL
+    $categorie = isset($_GET['categorie']) ? sanitize_text_field($_GET['categorie']) : '';
+    $format = isset($_GET['format']) ? sanitize_text_field($_GET['format']) : '';
+    $trier = isset($_GET['trier']) ? sanitize_text_field($_GET['trier']) : '';
+
+    // Si une catégorie est définie, ajouter au tableau des arguments
+    if (!empty($categorie)) {
+        $args['tax_query'][] = array(
+            'taxonomy' => 'categorie',
+            'field'    => 'slug',
+            'terms'    => $categorie,
+            'operator' => 'IN',
+        );
+    }
+
+    // Si un format est défini, ajouter au tableau des arguments
+    if (!empty($format)) {
+        $args['tax_query'][] = array(
+            'taxonomy' => 'format',
+            'field'    => 'slug',
+            'terms'    => $format,
+            'operator' => 'IN',
+        );
+    }
+
+    // Si l'option de tri est définie, modifier l'ordre
+    if (!empty($trier)) {
+        $args['order'] = $trier;
+    }
+
+// var_dump($args);
+
+$query = new WP_Query($args);
+
+
+if ($query->have_posts()) {
+    while ($query->have_posts()) {
+        $query->the_post();  ?>
+        <a class="photo_item" href="<?php the_permalink(); ?>">
+                <?php the_post_thumbnail('large')?>
                 <div class="overlay">
                     <div class="full">
                     <img src="<?php echo get_template_directory_uri(); ?>/images/icons/fullscreen.png" alt="Agrandir">
@@ -62,16 +123,30 @@
                     <img src="<?php echo get_template_directory_uri(); ?>/images/icons/eye.png" alt="Voir">
                     </div>
                     <div class="infos">
-                        <div>sdhfkjhf</div>
-                        <div>sdklffsl</div>
+                        <div><?php the_title() ?></div>
+                        <?php $categories = get_the_terms(get_the_ID(), 'categorie');  ?>
+                        <?php
+                        if (!empty($categories) && !is_wp_error($categories)) {
+                            foreach ($categories as $category) {
+                                echo "<div>".esc_html($category->name)."</div>";
+                            }
+                        } 
+                        ?> 
                     </div>
                 </div>
-            </div>
+         </a>
+
+<?php
+    }
+    wp_reset_postdata(); // Réinitialiser la requête globale
+}
+
+?>
     </div>
 
     <div class="load-more">
     <button class="load-more-button">Charger plus</button>
     </div>
 </section>
-
+</main>
 <?php get_footer(); ?>

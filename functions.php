@@ -39,3 +39,6 @@ function register_assets() {
     );
 }
 add_action('wp_enqueue_scripts', 'register_assets');
+
+//support themes images
+add_theme_support('post-thumbnails');
