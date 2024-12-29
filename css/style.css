@@ -5,6 +5,7 @@
 
 body {
   margin: 0;
+  font-family: "Space Mono", monospace; /* Police principale */
 }
 
 header {
@@ -14,8 +15,8 @@ header {
   max-width: 1200px;
   margin: 0 auto;
 }
-header div {
-  padding-top: 17px;
+header .logo {
+  padding-top: 20px;
 }
 header ul {
   list-style: none;
@@ -32,7 +33,7 @@ header ul a {
 main {
   width: 100vw;
   margin: 0 auto; /* Centre le contenu horizontalement */
-  padding: 0; /* Ajoute un peu d'espace sur les côtés */
+  padding: 0;
 }
 
 .banner {
@@ -76,7 +77,7 @@ main {
     width: 100%;
   }
   .banner h1 {
-    font-size: 50px; /* Réduction de la taille du texte */
+    font-size: 50px;
     -webkit-text-stroke-width: 2px; /* Ajustement de l'épaisseur du contour */
   }
 }
@@ -248,6 +249,7 @@ footer {
   width: 100%;
   display: flex;
   justify-content: center;
+  gap: 60px;
 }
 footer ul {
   list-style: none;
@@ -259,6 +261,90 @@ footer ul a {
   text-transform: uppercase;
   color: black;
   text-decoration: none;
+}
+footer p {
+  text-transform: uppercase;
+}
+
+.popup {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.popup.show {
+  display: flex;
+}
+.popup .popupin {
+  width: 100%;
+  max-width: 600px;
+  min-height: 200px;
+  background-color: white;
+  padding-top: 30px;
+  border: solid 5px;
+  border-color: black;
+}
+.popup .popupin .closecontact {
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+.popup .popupin .closecontact:hover {
+  transform: scale(1.1);
+}
+.popup .popupin .closecontact::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.popup .popupin .closecontact:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+.popup .popupin #wpcf7-f71-o1 > form {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.popup .popupin #wpcf7-f71-o1 > form label {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: "Poppins", sans-serif;
+}
+.popup .popupin #wpcf7-f71-o1 > form input {
+  border-color: #B8BBC2;
+  border: solid 1px;
+  border-radius: 8px;
+  height: 40px;
+}
+.popup .popupin #wpcf7-f71-o1 > form .btnenvoi {
+  width: 100%;
+  background-color: #B8BBC2;
+  border: 0;
+  padding: 5px;
+  border-radius: 8px;
 }
 
 /******PAGE INFO PHOTO*****/
@@ -282,10 +368,10 @@ footer ul a {
 }
 .photo-content .content-wrapper .photo-infos {
   width: calc(50% - 15px);
-  padding: 30px;
+  padding: 30px 30px 80px 30px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   box-sizing: border-box;
   border-bottom: 1px solid black; /* Bordure noire en bas */
 }
@@ -319,6 +405,8 @@ footer ul a {
 .photo-content .content-wrapper .photo-display img {
   max-width: 100%;
   max-height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 .photo-content .interactions {
   width: 100%;

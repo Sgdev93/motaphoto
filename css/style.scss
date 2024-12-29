@@ -3,9 +3,9 @@
 }
 
 body {
-    margin:0
+    margin:0;
+    font-family: 'Space Mono', monospace; /* Police principale */    
 }
-
 
 header {
     display: flex;
@@ -14,9 +14,9 @@ header {
     max-width: 1200px;
     margin: 0 auto;
 
-   div {
-    padding-top: 17px;
-   }
+    .logo {
+        padding-top: 20px;
+    }
 
     ul {
         list-style: none;
@@ -29,14 +29,13 @@ header {
             text-transform: uppercase;
             font-size: clamp(12px, 2vw, 16px);;
         }
-
     }
 }
 
 main {
         width: 100vw;
         margin: 0 auto;    /* Centre le contenu horizontalement */
-        padding: 0;   /* Ajoute un peu d'espace sur les côtés */
+        padding: 0;  
     }
     
 .banner {
@@ -81,7 +80,7 @@ main {
         }
 
         h1 {
-            font-size: 50px; /* Réduction de la taille du texte */
+            font-size: 50px; 
             -webkit-text-stroke-width: 2px; /* Ajustement de l'épaisseur du contour */
         }
     }
@@ -269,6 +268,7 @@ footer {
     width: 100%;
     display: flex;
     justify-content: center;
+    gap: 60px;
     
     ul {
         list-style: none;
@@ -282,8 +282,103 @@ footer {
             text-decoration: none;
         }
     }
+    p {
+        text-transform: uppercase;
+    }
 }
 
+// contact form
+
+.popup {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background:rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    &.show {
+        display: flex;
+    }
+
+    .popupin {
+        width: 100%;
+        max-width: 600px;
+        min-height: 200px;
+        background-color: white;
+        padding-top: 30px;
+        border: solid 5px;
+        border-color: black;
+       
+
+        .closecontact {
+            width:100%;
+            padding-left: 0;
+            padding-right: 0;
+            cursor: pointer; // Change le curseur en main
+            transition: transform 0.2s ease; // Animation au survol
+            position: relative;
+
+            &:hover {
+                transform: scale(1.1); // Agrandissement au survol
+            }
+
+            &::after {
+                content: attr(title); // Utilise l'attribut "title" pour le contenu de l'infobulle
+                position: absolute;
+                bottom: 110%; // Place l'infobulle au-dessus de l'image
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: rgba(0, 0, 0, 0.75); // Fond noir semi-transparent
+                color: white;
+                padding: 5px 10px;
+                border-radius: 4px;
+                font-size: 12px;
+                white-space: nowrap;
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+            }
+
+            &:hover::after {
+                opacity: 1; // Affiche l'infobulle au survol
+                visibility: visible;
+            }
+        }
+        
+        
+        #wpcf7-f71-o1 > form {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
+                label {
+                    text-transform: uppercase;
+                    font-size: 12px;
+                    font-weight: 500;
+                    font-family:'Poppins', sans-serif; 
+                }
+                input {
+                    border-color: #B8BBC2;
+                    border: solid 1px;
+                    border-radius: 8px;
+                    height: 40px;
+                }
+                .btnenvoi {
+                    width: 100%;
+                    background-color: #B8BBC2;
+                    border: 0;
+                    padding: 5px;
+                    border-radius: 8px;
+                    }
+        }
+    }
+}
 /******PAGE INFO PHOTO*****////
 
 .photo-content {
@@ -304,10 +399,10 @@ footer {
     // Bloc de gauche (50%)
         .photo-infos {
             width: calc(50% - 15px);
-            padding: 30px;
+            padding: 30px 30px 80px 30px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-end;
             box-sizing: border-box;
             border-bottom: 1px solid black; /* Bordure noire en bas */
             
@@ -347,6 +442,7 @@ footer {
         img {
             max-width: 100%;
             max-height: 100%;
+            object-fit: contain;
         }
     }
 }
@@ -490,6 +586,7 @@ footer {
             text-align: center;
         }
     }
+
     footer {
         ul {
         display: flex;

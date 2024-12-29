@@ -67,81 +67,8 @@ if ($query->have_posts()) {
     </div>
 
     <div class="photos_list">
-    <?php
-// Créer une nouvelle requête personnalisée
-$args = array(
-    'post_type'      => 'photo',       // Récupérer les photos
-    'posts_per_page' => -1,           // toutes
-    'orderby'        => 'title',      // Trier aléatoirement
-); 
-
-    // Récupérer les variables de l'URL
-    $categorie = isset($_GET['categorie']) ? sanitize_text_field($_GET['categorie']) : '';
-    $format = isset($_GET['format']) ? sanitize_text_field($_GET['format']) : '';
-    $trier = isset($_GET['trier']) ? sanitize_text_field($_GET['trier']) : '';
-
-    // Si une catégorie est définie, ajouter au tableau des arguments
-    if (!empty($categorie)) {
-        $args['tax_query'][] = array(
-            'taxonomy' => 'categorie',
-            'field'    => 'slug',
-            'terms'    => $categorie,
-            'operator' => 'IN',
-        );
-    }
-
-    // Si un format est défini, ajouter au tableau des arguments
-    if (!empty($format)) {
-        $args['tax_query'][] = array(
-            'taxonomy' => 'format',
-            'field'    => 'slug',
-            'terms'    => $format,
-            'operator' => 'IN',
-        );
-    }
-
-    // Si l'option de tri est définie, modifier l'ordre
-    if (!empty($trier)) {
-        $args['order'] = $trier;
-    }
-
-// var_dump($args);
-
-$query = new WP_Query($args);
-
-
-if ($query->have_posts()) {
-    while ($query->have_posts()) {
-        $query->the_post();  ?>
-        <a class="photo_item" href="<?php the_permalink(); ?>">
-                <?php the_post_thumbnail('large')?>
-                <div class="overlay">
-                    <div class="full">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/icons/fullscreen.png" alt="Agrandir">
-                    </div>
-                    <div class="eye">
-                    <img src="<?php echo get_template_directory_uri(); ?>/images/icons/eye.png" alt="Voir">
-                    </div>
-                    <div class="infos">
-                        <div><?php the_title() ?></div>
-                        <?php $categories = get_the_terms(get_the_ID(), 'categorie');  ?>
-                        <?php
-                        if (!empty($categories) && !is_wp_error($categories)) {
-                            foreach ($categories as $category) {
-                                echo "<div>".esc_html($category->name)."</div>";
-                            }
-                        } 
-                        ?> 
-                    </div>
-                </div>
-         </a>
-
-<?php
-    }
-    wp_reset_postdata(); // Réinitialiser la requête globale
-}
-
-?>
+         <!-- résultats AJAX -->
+    
     </div>
 
     <div class="load-more">
