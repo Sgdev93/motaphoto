@@ -45,7 +45,7 @@
 
             <!-- Bloc de droite : Photo en format natif -->
             <div class="photo-display">
-                <img src="<?php the_post_thumbnail('large'); ?>">
+                <?php the_post_thumbnail('large'); ?>
             </div>
         </div>
             <!-- Bloc d'interactions de 118px de hauteur -->
@@ -71,7 +71,7 @@
                         if ($prev_post) {
                             $prev_thumbnail = get_the_post_thumbnail($prev_post->ID, 'thumbnail');
                             $prev_link = get_permalink($prev_post->ID);
-                            echo '<a href="' . esc_url($prev_link) . '" class="nav-link previous-thumbnail">' . $prev_thumbnail . '</a>';
+                            echo '<a href="' . esc_url($prev_link) . '" class="nav-link previous-thumbnail hidden">' . $prev_thumbnail . '</a>';
                         } 
 
                         // Récupérer l'ID du post suivant
@@ -79,19 +79,23 @@
                         if ($next_post) {
                             $next_thumbnail = get_the_post_thumbnail($next_post->ID, 'thumbnail');
                             $next_link = get_permalink($next_post->ID);
-                            echo '<a href="' . esc_url($next_link) . '" class="nav-link next-thumbnail">' . $next_thumbnail . '</a>';
+                            echo '<a href="' . esc_url($next_link) . '" class="nav-link next-thumbnail hidden">' . $next_thumbnail . '</a>';
                         } 
                         ?>
                     </div>
                     <div class="arrows">
-                        <a href="#" class="nav-link previous-photo" title="Photo précédente">
+                        <?php  if ($prev_post) { ?>
+                        <a href="<?php echo esc_url($prev_link); ?>" class="nav-link previous-photo" title="Photo précédente">
                         <!-- Flèche précédente -->
                              <img src="<?php echo get_template_directory_uri(); ?>/images/arrow_left.png" alt="Retour">
                         </a>
-                        <a href="#" class="nav-link next-photo" title="Photo suivante">
+                        <?php  } ?>
+                        <?php  if ($next_post) { ?>
+                        <a href="<?php echo esc_url($next_link); ?>" class="nav-link next-photo" title="Photo suivante">
                         <!-- Flèche suivante -->
                             <img src="<?php echo get_template_directory_uri(); ?>/images/arrow_right.png" alt="Suivante">
                         </a>
+                        <?php  } ?>
                     </div>
                 </div>
             </div>
@@ -130,28 +134,7 @@ if ($query->have_posts()) { ?>
         <?php
         while ($query->have_posts()) {
             $query->the_post();  ?>
-            <a class="photo_item" href="<?php the_permalink(); ?>">
-                <?php the_post_thumbnail('large') ?>
-                <div class="overlay">
-                    <div class="full">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/icons/fullscreen.png" alt="Agrandir">
-                    </div>
-                    <div class="eye">
-                        <img src="<?php echo get_template_directory_uri(); ?>/images/icons/eye.png" alt="Voir">
-                    </div>
-                    <div class="infos">
-                        <div><?php the_title() ?></div>
-                        <?php $categories = get_the_terms(get_the_ID(), 'categorie');  ?>
-                        <?php
-                        if (!empty($categories) && !is_wp_error($categories)) {
-                            foreach ($categories as $category) {
-                                echo "<div>" . esc_html($category->name) . "</div>";
-                            }
-                        }
-                        ?>
-                    </div>
-                </div>
-            </a>
+           <?php get_template_part('templates-part/photos'); ?>
     <?php
         }
         wp_reset_postdata(); // Réinitialiser la requête globale

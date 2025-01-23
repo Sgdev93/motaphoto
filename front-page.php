@@ -32,7 +32,7 @@ if ($query->have_posts()) {
         <form action="<?php echo esc_url( home_url( '/' ) ); ?>" class="select-filtres" >
             <div class="filtres1">
                 <select name="categorie" id="categorie" class="myform">
-                    <option value="">Catégories</option>
+                    <option value="">CATÉGORIES</option>
                     <?php $categories = get_terms('categorie');  ?>
                 <?php
                 if (!empty($categories) && !is_wp_error($categories)) {
@@ -44,7 +44,7 @@ if ($query->have_posts()) {
                 </select>
 
                 <select name="format" id="format" class="myform">
-                    <option value="">Format</option>
+                    <option value="">FORMAT</option>
                     <?php $formats = get_terms('format');  ?>
                 <?php
                 if (!empty($formats) && !is_wp_error($format)) {
@@ -58,7 +58,7 @@ if ($query->have_posts()) {
 
             <div class="filtres2">
                 <select name="trier" id="trier" class="myform">
-                    <option value="">Trier par</option>
+                    <option value="">TRIER PAR</option>
                     <option value="DESC">Du + récent au + ancien</option>
                     <option value="ASC">Du + ancien au + récent</option>
                 </select>
@@ -72,7 +72,7 @@ if ($query->have_posts()) {
     </div>
 
     <div class="load-more">
-    <button class="load-more-button">Charger plus</button>
+    <button class="load-more-button" data-page="1">Charger plus</button>
     </div>
 </section>
 </main>
